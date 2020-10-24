@@ -37,7 +37,7 @@ library(tidyverse)
 ```
 Then load in the example data that was downloaded from [Kaggle](https://www.kaggle.com/andrewmvd/heart-failure-clinical-data)
 ```{r}
-heart_failure <- read.csv("./heart_failure_clinical_records_dataset.csv")
+heart_failure <- read.csv(url("https://raw.githubusercontent.com/sbiguzzi/FALL2020TIDYVERSE/master/heart_failure_clinical_records_dataset.csv"))
 ```
 ```{r, echo=F}
 column_list <- c("anaemia","diabetes","high_blood_pressure","smoking","DEATH_EVENT")
