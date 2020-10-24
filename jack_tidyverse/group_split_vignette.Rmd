@@ -1,0 +1,24 @@
+---
+title: "group_split vignette"
+author: "Jack Wright"
+date: "10/24/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## dplyr function "group_split()"
+
+group_split() helps elucidate the nature of the data frame object in r. A data frame is just a list of equal length vectors. The consequence of this is you can reframe your thinking around accessing and editing data frames. 
+
+## personal note
+
+I was working on a vignette for the map() function, and in my research found these data frames nested inside of lists which I had not encountered before. 
+
+
+## what is group_split()
+
+group_split() is like group_by() , but instead of 
+
