@@ -6,7 +6,7 @@ output:
   bookdown::html_document2:
     toc: true
     fig_caption: true
-    template: flatly
+
 ---
 
 ```{r setup, include=FALSE}
