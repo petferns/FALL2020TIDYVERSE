@@ -3,9 +3,11 @@ title: "TidyVerse Vignette"
 author: "Mustafa Telab"
 date: "10/25/2020"
 output:
-  bookdown::html_document2:
+  html_document:
     toc: true
-    fig_caption: true
+    toc_float:
+      collapsed: true
+      smooth_scroll: false
 
 ---
 
@@ -54,7 +56,7 @@ candy%>%
 
 ```
 
-## Gemetric Objects
+## Geometric Objects
 
 ```{r}
 candy%>%
