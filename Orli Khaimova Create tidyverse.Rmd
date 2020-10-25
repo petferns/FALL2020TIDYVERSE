@@ -1,7 +1,15 @@
-# FALL2020TIDYVERSE
-CUNY DATA 607 TIDYVERSE Collaborative project
+---
+title: "Tidyverse"
+author: "Orli Khaimova"
+output: html_document
+---
 
-Orli Khaimova
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(magrittr)
+library(tidyverse)
+```
 
 `fct_rev` relevels the levels of a factor in reverse order. In this case, I factored the regions and then used the function in order to put them in reverse alphabetical order. By doing so, I was able to print the regions alphabetically in the graph.
 
@@ -29,3 +37,4 @@ avocados %>%
   coord_flip() +
   theme(legend.position = "none")
 ```
+
