@@ -1,3 +1,4 @@
 # FALL2020TIDYVERSE
 CUNY DATA 607 TIDYVERSE Collaborative project
-updated by Jordan
+
+ggplot2_vignettes: By Jordan Tapke 
