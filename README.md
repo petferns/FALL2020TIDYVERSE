@@ -49,7 +49,7 @@ str_split(), str_replace(), str_match()
 # 2. dplyr
 
 
-Throughout this part of the vignette, we make use of "student performance", a dataset supplied by infer containing a sample of 1000 observations of 8 variables from [kaggle](https://www.kaggle.com/spscientist/students-performance-in-exams) datasets.
+Throughout this part of the vignette, we make use of "student performance", a dataset containing a sample of 1000 observations of 8 variables from [kaggle](https://www.kaggle.com/spscientist/students-performance-in-exams) datasets.
 
 ```{r message=FALSE}
 # library
