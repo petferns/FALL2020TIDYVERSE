@@ -83,6 +83,8 @@ I decided to pick a data set regarding the senate race fundamentals. Using dplyr
 =======
 CUNY DATA 607 TIDYVERSE Collaborative project
 
+ggplot2_vignettes: By Jordan Tapke 
+=======
 Zhouxin Shi CREATE - function(read_csv,filter,select), data(Public Use Microdata Sample)
 =======
 
@@ -184,3 +186,4 @@ Analysis of Diamond clarity and depth correlation/frequency as well as ratio [pe
 =======
 Change Log:
 26 October: Added vignette w/ examples for purrr and forcats, Cameron Smith
+
