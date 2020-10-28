@@ -74,6 +74,13 @@ The dataset was imported and cleaned using packages in TidyVerse
     ```
 =======
 # FALL2020TIDYVERSE
+
+Ian Costello Tidyverse Create
+
+# Tidyverse Create
+
+I decided to pick a data set regarding the senate race fundamentals. Using dplyr and stringr, I created a new column "state_ID for just the two character initials of states. I also filtered based on what I believe are the most competitive states this cycle. 
+=======
 CUNY DATA 607 TIDYVERSE Collaborative project
 
 
@@ -97,9 +104,18 @@ Josef Waples - power plant data added as 19th pull request but am I first change
 # Description
 arrange() sorts the rows according to the values of the specified column, with the lowest values appearing near the top of the data frame.Place desc() around a column name to cause arrange() to sort by descending values of that column.
 
+
 ```{r}
 library(tidyverse)
 
+senFunURL <- "https://projects.fivethirtyeight.com/2020-general-data/senate_fundamentals.csv"
+senFun <- read.csv(file = senFunURL, header = TRUE, sep = ",")
+
+senFun <- senFun %>%
+  dplyr::mutate(state_ID = str_extract(district, "^[:alpha:]{2}")) %>%
+  filter(state_ID == "ME" | state_ID == "MI" | state_ID == "AL" | state_ID == "CO" | state_ID == "IA" | state_ID == "GA" | state_ID == "AZ" | state_ID == "NC" | state_ID == "SC")
+```
+=======
 #read csv file 
 file<- read.csv("https://raw.githubusercontent.com/hrensimin05/Data_607/master/2019.csv")
 #view(file)
