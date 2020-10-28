@@ -1,0 +1,39 @@
+---
+title: "TidyVerse Create"
+output: html_document
+---
+
+get data from 538
+```{r}
+source = 'https://raw.githubusercontent.com/fivethirtyeight/covid-19-polls/master/covid_approval_polls.csv'
+
+#read data into data frame
+
+df = read.csv(source)
+df
+```
+
+Demonstrate functions in tidyverse package dplyr
+```{r}
+library("dplyr")
+
+#Relocate changes the order of the columns
+#the first argument should be the data set, the 2nd is the column you want to move, the third is a how you want to move it.  For this, i chose .after, which will place it after the specific column chosen for this parameter.
+new_df = relocate(df, pollster, .after = start_date)
+new_df
+
+#count counts observations by group
+#the first argument should be the data set, the 2nd is the column you want to group by, and the third is if you want to sort or not.
+count(new_df, population, sort=TRUE)
+```
+
+Demonstrate functions in tidyverse package ggplot2
+```{r}
+library("ggplot2")
+
+# Create a scatter plot
+#the first argument should be the data set, the 2nd is the x axis variable, and the third is the y axis variable.
+ggplot(new_df, aes(x=population, y=sample_size)) + geom_bar(stat="identity")
+
+```
+

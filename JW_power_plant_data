@@ -1,0 +1,119 @@
+---
+title: "power_plant_output_data"
+author: "Josef Waples"
+date: "10/25/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Tidyverse practice
+
+Kaggle dataset powerpoint generation
+
+The tidyverse functions that I will be using in this vignette are: 
+
+readr
+lubridate
+dplyr
+ggplot2
+broom
+
+Readr is the first tidyverse package that use in our project. We use readr to read csv files into RStudio by finding the correct pathway from our local machine. 
+
+
+```{r one generation}
+
+library(readr)
+
+
+plant_one_generation <- read.csv(url("https://www.kaggle.com/datasets?select=Plant_1_Generation_Data.csv")
+plant_one_weather <- read.csv(url("https://www.kaggle.com/datasets?select=Plant_1_Weather_Sensor_Data.csv"))
+plant_two_generation <- read.csv(url("https://www.kaggle.com/datasets?select=Plant_2_Generation_Data.csv"))
+plant_two_weather <- read.csv(url("https://www.kaggle.com/datasets?select=Plant_2_Weather_Sensor_Data.csv"))
+
+# Our next step is to test the length of our dataframes and combine using rbind.
+
+length(plant_one_generation) == length(plant_two_generation)
+# both length 7 - rbind works
+
+both_plant_generation <- rbind(plant_one_generation, plant_two_generation)
+
+```
+
+
+Our second tidyverse package that we use is lubridate. Lubridate's ymd function is helpful here in coercing the Date_Time / Posixct variable into something that we use in analysis and visualizations. 
+
+```{r two }
+
+library(lubridate)
+
+class(both_plant_generation$DATE_TIME)
+
+both_plant_generation$DATE_TIME <- ymd_hms(both_plant_generation$DATE_TIME)
+
+floor_date(both_plant_generation$DATE_TIME, "day")
+
+```
+
+Our third tidyverse package is dplyr. Dplyr allows us to use the %>% in order to make use of filter / group_by / summarize and other functions that are useful for reporting. 
+
+```{r three }
+
+library(ggplot2)
+
+both_plant_generation <- both_plant_generation %>%
+  filter(DATE_TIME > "2010-01-20 20:00:00") %>%
+  filter(DATE_TIME < "2020-01-20 20:00:00")
+
+# both_plant_generation_summary <- both_plant_generation %>%
+#   group_by(DATE_TIME) %>%
+#   summarize(total_yield_day = sum(TOTAL_YIELD))
+
+ggplot(both_plant_generation, aes(x = DATE_TIME, y = DAILY_YIELD)) +
+  geom_point(position = "jitter") +
+  geom_smooth(method = "lm")
+
+
+
+
+
+
+```
+
+Our fourth tidyverse package that we use is ggplot2. This package allows us to create professional visualizations by first specifying our data and the by mapping aesthetic layers on time. 
+
+
+```{r four }
+
+library(ggplot2)
+
+both_plant_generation <- both_plant_generation %>%
+  filter(DATE_TIME > "2010-01-20 20:00:00") %>%
+  filter(DATE_TIME < "2020-01-20 20:00:00")
+
+# both_plant_generation_summary <- both_plant_generation %>%
+#   group_by(DATE_TIME) %>%
+#   summarize(total_yield_day = sum(TOTAL_YIELD))
+
+ggplot(both_plant_generation, aes(x = DATE_TIME, y = DAILY_YIELD)) +
+  geom_point(position = "jitter") +
+  geom_smooth(method = "lm")
+
+```
+
+Our fifth tidyverse function is broom. Broom lets us easily report statistical infromation from our linear model as a data table. 
+
+```{r , echo=FALSE}
+
+library(broom)
+
+linear_model <- lm(DAILY_YIELD ~ DATE_TIME, both_plant_generation)
+
+tidy(linear_model)
+
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
