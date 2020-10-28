@@ -1,0 +1,68 @@
+---
+title: "tidyverse::ggplot2"
+author: "Jordan Tapke"
+date: "10/25/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Load ggplot2 or the entire tidyverse library
+
+```{r, message=FALSE}
+library(ggplot2)
+library(tidyverse)
+```
+
+## Data
+
+Below is data on pictures used for Machine Learning with age, ethinicity, and gender variables given.
+```{r}
+df <- read.csv(url("https://raw.githubusercontent.com/jtapke/FALL2020TIDYVERSE/master/age_gender.csv"))
+```
+
+## Scatter Plot
+
+```{r, echo=F, fig.show='asis'}
+#First, provide the data and aesthethic mappings, specified by aes()
+#Add layers to the plot using "+"
+ggplot(data=df, aes(age, ethnicity,)) +
+  
+#geom_point creates a scatterplot layer  
+  geom_point()
+```
+
+## Bar Plot
+```{r, echo=F, fig.show='asis'}
+ggplot(data=df, aes(age))+
+  
+#geom_bar creates a bar plot layer  
+    geom_bar()+
+  
+#scale_x_continuous() gives you greater control over the x-axis
+#arguments put in seq() are: beginning of x-axis, end of x-axis, axis marker spacing  
+    scale_x_continuous(breaks = seq(0, 120, 10))
+```    
+ 
+## Other layers in ggplot
+
+```{r}
+ggplot(data=df, aes(age))+
+    geom_bar()+
+  
+  #add a title to your plot
+    ggtitle("Most Requested Type of Skills")+
+  
+  #changes labels of axis
+    xlab("Age") + ylab("# of Each Age")
+```
+```{r}
+#control the color using color= in aes
+ggplot(data=df, aes(x=age, y=ethnicity, color=as.factor(gender))) +
+  geom_point()+
+  
+#remove the color legend from plot setting legend.position = "none"
+  theme(legend.position = "none") 
+```
