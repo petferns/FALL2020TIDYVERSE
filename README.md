@@ -83,6 +83,35 @@ I decided to pick a data set regarding the senate race fundamentals. Using dplyr
 =======
 CUNY DATA 607 TIDYVERSE Collaborative project
 
+Orli Khaimova
+
+`fct_rev` relevels the levels of a factor in reverse order. In this case, I factored the regions and then used the function in order to put them in reverse alphabetical order. By doing so, I was able to print the regions alphabetically in the graph.
+
+`geom_pointrange` graphs the interval for the average price of avocados for each region. I had to define a ymin and ymax as well. It is useful for drawing confidence intervals and in this case the range of prices.
+
+```{r fig.height = 10, fig.width = 5}
+avocados <- read.csv("https://raw.githubusercontent.com/okhaimova/DATA-607/master/avocado.csv")
+
+avocados$Date <- as.Date(avocados$Date)
+
+avocados$year <- as.character(avocados$year)
+
+#factors the regions and then using forcats, we reverse the order to make it z-a
+avocados$region <- avocados$region %>%
+  as.factor() %>%
+  fct_rev()
+
+avocados %>% 
+  ggplot(aes(y = AveragePrice, x = region, 
+             ymin = AveragePrice-sd(AveragePrice), ymax = AveragePrice+sd(AveragePrice))) +
+  geom_pointrange(aes(color = as.factor(region)), size =.01) +
+  ylab("Average Price") +
+  xlab("Region") +
+  ggtitle("Average Price Range") +
+  coord_flip() +
+  theme(legend.position = "none")
+```
+=======
 Douglas Barley added KivaLoans.Rmd vignette demonstrating group_by() and ggplot() functions from the Tidyverse.
 =======
 
@@ -480,4 +509,5 @@ Analysis of Diamond clarity and depth correlation/frequency as well as ratio [pe
 =======
 Change Log:
 26 October: Added vignette w/ examples for purrr and forcats, Cameron Smith
+
 
