@@ -83,6 +83,10 @@ I decided to pick a data set regarding the senate race fundamentals. Using dplyr
 =======
 CUNY DATA 607 TIDYVERSE Collaborative project
 
+Using ggExtra for Exploratory Plotting by Rachel Greenlee
+-adding boxplots and histograms to axis of a standard scatterplot
+-super quick frequency histograms
+=======
 
 CREATE Vignette Tidyverse Project describes how to use tidyverse functions
 see palmorezm_tidyverse_vignette for importing data from comma separated values
@@ -513,4 +517,5 @@ Analysis of Diamond clarity and depth correlation/frequency as well as ratio [pe
 =======
 Change Log:
 26 October: Added vignette w/ examples for purrr and forcats, Cameron Smith
+
 
