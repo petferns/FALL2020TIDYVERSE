@@ -1,0 +1,13 @@
+argument,required,description
+file,required," Either a path to a file, a connection or literal data"
+col_names,optional,Either TRUE/FALSE or a character vector of column names.
+col_types,optional,"if NULL tries to guess the col_type, otherwise need to be specified."
+na,optional,Character vector of strings to interpret as missing values.
+quoted_na,optional,Determine if missing values inside quotes will be treated as missing values or strings.
+comment,optional,A string used to identify comments.
+trim_ws,optional,Should whitespace be trimmed from start and end of string?
+skip,optional,Number of lines to skip before reading data.
+n_max,optional,Maximum number of records to read.
+guess_max,optional,Maximum number of records to use for guessing column types.
+progress,optional,Display a progress bar?
+skip_empty_rows,optional,Should blank rows be ignored altogether?
