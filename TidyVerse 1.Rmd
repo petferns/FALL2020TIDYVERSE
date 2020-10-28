@@ -1,0 +1,126 @@
+---
+title: "TidyVerse Create Assignment: Water Quality Data for the City of Austin, TX"
+author: "Atina Karim"
+date: "10/25/2020"
+output: 
+ html_document:
+  toc: true
+  toc_float: true
+  toc_depth: 3
+  df_print: paged
+  number_sections: true
+  theme: united 
+---
+
+# Water Quality Sampling Data
+ In this assignment we will look at Water Quality Data from the City of Austin's online data portal:[https://data.austintexas.gov/Environment/Water-Quality-Sampling-Data/5tye-7ray](https://data.austintexas.gov/Environment/Water-Quality-Sampling-Data/5tye-7ray). 
+ 
+The dataset contains the results of about a 1000 water quality tests performed on water bodies in Austin, in 2020.
+
+We will use tidyverse packages to clean and study the datasets.
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+## Load libraries and Import Data
+```{r, warning=FALSE}
+library(tidyverse)
+```
+
+We will import the CSV directly from the City of Austin cite and study the data structure, before deciding what analysis we would like to perform on it.
+```{r,message=FALSE}
+water <- read_csv ('https://data.austintexas.gov/resource/5tye-7ray.csv')
+glimpse(water) #studying the data structure
+```
+## Filtering the dataset
+After studying the dataset, I have decided to focus my analysis on the Ph level and water temperature for these observations. Therefore, I will only keep the fields that I am interested, in for our dataset.
+```{r, messages=FALSE}
+water <- tibble('Site_Name'=water$site_name,
+                 'Site_Type' = water$site_type,
+                  'Sample_Time'=water$sample_date,
+                    'Parameter_Type' = water$param_type,
+                      'Parameter' = water$parameter,
+                        'Results' = water$result,
+                          'Unit' = water$unit)
+glimpse(water)
+```
+Now that we have filtered our dataset to only include the variables of interest, let's further filter it down to observations where our parameters are PH and water temperature.
+```{r}
+unique(water$Parameter) #looking at unique parameter values
+```
+Looks like there are a lot of values stored under parameter. However I am only interested in the water Ph and temperature. I will create another tibble that is a subset of the water tibble, but only contains the observations for parameter = PH or Water Temperature.
+```{r}
+water2 <- filter(water, water$Parameter=='PH'|water$Parameter=='WATER TEMPERATURE')
+knitr:: kable (water2)
+```
+
+## Removing blank values
+Blank or missing values can skew or results quite a bit. Therefore, we will get rid of any blank or missing values.
+```{r}
+na.omit(water2$Results)
+```
+
+## Converting the table from long to wide using Spread
+
+First, we will drop the columns we do not need anymore such as unit and parameter type as we know what the corresponding values are for water pH and water temperature. We will overwrite our water2 tibble with a copy of itself excluding the unit and parameter type.
+```{r}
+water2 <- water2[,-c(4,7)] #corresponsing column numbers for parameter type and unit
+water2
+```
+Next, we will work on putting the water temperature and PH that were taken at the same time and at the same location, in a single row, because they are essentially from the same observation, but just different variables. We will use tidyverse's spread function.
+
+This is returning an error, for some row numbers. Let's investigate what the issue is for these rows. We will look at the first five row numbers, specified in the error message.
+```{r}
+water2[c(23,27,28,31,32),]
+```
+### Duplicated
+It looks like there are multiple PH values for an observation taken at the same time (18th August, 2020) at 13:35, at Lady Bird Lake. So there are duplicate measurements in our dataset. We do not have enough information to determine why this is the case, so we will just work towards removing the duplicate values using the duplicated function.
+```{r}
+duplicate <- water2[,-5]#removing the 5th column because this is Results column which does not contain duplicates.
+duplicate2 <- which(duplicated(duplicate)) #row numbers of values which are duplicates of earlier observations
+duplicate2
+```
+There seems to be quite a few duplicate observations in our dataset. We will filter them out from our water2 tibble and try the spread again.
+```{r}
+water2 <- water2[-duplicate2,]
+```
+```{r}
+water2_wide <- spread(water2,Parameter,Results)
+water2_wide
+```
+### Colnames
+Looks like our spread worked this time.As a final clean up, I'd like to change the column name for water temperature to Water_Temperature and PH to pH, using the colnames function.
+
+```{r}
+colnames(water2_wide)[4] <- 'pH'
+colnames(water2_wide)[5] <- 'Water_Temperature'
+water2_wide
+```
+## Exploratory Analysis Using GGPlot
+
+Now that we have a cleaned dataset, let's look at the temperature and pH statistics:
+
+pH BoxPlot
+```{r}
+boxplot(water2_wide$pH)
+```
+It looks like the ph Levels more or less ranged from around 7-8.2 wuth an average of ~7.6. for all sites.
+
+Water Temperature Histogram
+
+```{r}
+ggplot(data=water2_wide,aes(x=Water_Temperature,fill=Site_Type))+geom_histogram()
+```
+For water temperature, it looks like the range for lakes maybe slightly less varied (temperature points seem fairly close together) than streams and springs.
+
+### Is there a correlation between Water Temperature and pH level?
+Let's try to do a scatterplot for pH and Water Temperature to gauge if there maybe a correlation between the 2, for each site type. We will also use a fit line to help us detect any assocations.
+
+```{r}
+ggplot(water2_wide,
+       aes(pH,Water_Temperature, color = Site_Type))+
+  geom_point()+
+  geom_smooth(method = lm)
+
+```
+It appears that there is almost no correlation between the two, atleast for lake and streams (the lines appear almost straight,maybe sligtly positive for streams). There maybe a slightly negative correlation between the two for springs.
