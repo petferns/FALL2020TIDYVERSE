@@ -1,3 +1,7 @@
+My analysis includs analysing the sales of video games all around the world, I used more than one Tidyverse packges, and collected the data from Kaggle. 
+
+Any additional analysis is welcome.
+=======
 
 # TidyVerse Recipe CREATE
 
@@ -148,5 +152,4 @@ Analysis of Diamond clarity and depth correlation/frequency as well as ratio [pe
 =======
 Change Log:
 26 October: Added vignette w/ examples for purrr and forcats, Cameron Smith
-
 
