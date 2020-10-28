@@ -1,0 +1,88 @@
+---
+title: "607 - Tidyverse Assignment"
+author: "Karim Hammoud"
+date: "`r Sys.Date()`"
+output: openintro::lab_report
+---
+
+# Overview
+I want to analyze the sales of video games form all around the world, I collected the data from [Kaggle]("https://www.kaggle.com/gregorut/videogamesales") all numbers are per millions
+
+# we set up the environment
+
+```{r message=FALSE}
+library(tidyverse)
+```
+
+# We pull the data
+
+```{r}
+url <- "https://raw.githubusercontent.com/akarimhammoud/CUNY-SPS/master/607-Data-Acquisition-and-Management-CUNY-SPS-Fall2020/Tidyverse/vgsales.csv"
+
+video_games <- read_csv(url)
+head(video_games)
+```
+
+# first I will rename the sales colomns 
+
+```{r}
+video_games %>% 
+ rename(North_America_Sales = NA_Sales, Europe_Sales = EU_Sales, Japan_sales = JP_Sales)
+```
+
+# Arrange from the top globaly sales to the east
+
+```{r}
+video_games %>% 
+ arrange(desc(Global_Sales))
+```
+
+# Group by the Genre and calculate the min, mean, median, and max.
+
+```{r}
+video_games %>% 
+ group_by(Genre) %>% 
+ summarise(min = min(Global_Sales), mean = mean(Global_Sales), median = median(Global_Sales), max= max(Global_Sales)) %>% 
+ arrange(desc(max))
+```
+
+# Filter the top Global sales games > 30M.
+```{r}
+video_games_top <- video_games %>% 
+ filter(Global_Sales > 30)
+video_games_top
+```
+
+# Plot the top games with globaly sales.
+
+```{r}
+video_games_top %>% 
+ ggplot(aes(Global_Sales, Name)) + geom_point()
+```
+
+# group global sales by year and summurize the total
+```{r}
+per_year <- video_games %>% 
+ group_by(Year) %>% 
+ summarise(Total = sum(Global_Sales)) %>% 
+ filter(Year >= 2000, Year <= 2015)
+
+per_year
+```
+
+
+# plot per year between 2000 - 2015
+
+```{r}
+per_year %>% 
+ ggplot(aes(Year, Total)) + geom_point()
+```
+
+Any additional analysis is welcome.
+Thanks,
+Karim Hammoud
+
+
+
+
+
