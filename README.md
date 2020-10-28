@@ -76,6 +76,11 @@ The dataset was imported and cleaned using packages in TidyVerse
 # FALL2020TIDYVERSE
 CUNY DATA 607 TIDYVERSE Collaborative project
 
+
+### group_split() vignette by Jack Wright
+
+-added an instructional vignette on group split
+=======
 ### Vignettes
 
 In the vignettes folder we will hold the different vignette files. I added one called `readr-package-gc` which serves as an introduction to *readr*
@@ -161,4 +166,5 @@ Analysis of Diamond clarity and depth correlation/frequency as well as ratio [pe
 =======
 Change Log:
 26 October: Added vignette w/ examples for purrr and forcats, Cameron Smith
+
 
