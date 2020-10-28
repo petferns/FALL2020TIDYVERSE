@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+<meta name="author" content="George Cruz" />
+
+<meta name="date" content="2020-10-25" />
+
+<title>Using Tidyverse readr</title>
+
+<script>// Hide empty <a> tag within highlighted CodeBlock for screen reader accessibility (see https://github.com/jgm/pandoc/issues/6352#issuecomment-626106786) -->
+// v0.0.1
+// Written by JooYoung Seo (jooyoung@psu.edu) and Atsushi Yasumoto on June 1st, 2020.
+
+document.addEventListener('DOMContentLoaded', function() {
+  const codeList = document.getElementsByClassName("sourceCode");
+  for (var i = 0; i < codeList.length; i++) {
+    var linkList = codeList[i].getElementsByTagName('a');
+    for (var j = 0; j < linkList.length; j++) {
+      if (linkList[j].innerHTML === "") {
+        linkList[j].setAttribute('aria-hidden', 'true');
+      }
+    }
+  }
+});
+</script>
+
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css" data-origin="pandoc">
+code.sourceCode > span { display: inline-block; line-height: 1.25; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+
+</style>
+<script>
+// apply pandoc div.sourceCode style to pre.sourceCode instead
+(function() {
+  var sheets = document.styleSheets;
+  for (var i = 0; i < sheets.length; i++) {
+    if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
+    try { var rules = sheets[i].cssRules; } catch (e) { continue; }
+    for (var j = 0; j < rules.length; j++) {
+      var rule = rules[j];
+      // check if there is a div.sourceCode rule
+      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") continue;
+      var style = rule.style.cssText;
+      // check if color or background-color is set
+      if (rule.style.color === '' && rule.style.backgroundColor === '') continue;
+      // replace div.sourceCode by a pre.sourceCode rule
+      sheets[i].deleteRule(j);
+      sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
+    }
+  }
+})();
+</script>
+
+
+
+<style type="text/css">body {
+background-color: #fff;
+margin: 1em auto;
+max-width: 700px;
+overflow: visible;
+padding-left: 2em;
+padding-right: 2em;
+font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+font-size: 14px;
+line-height: 1.35;
+}
+#TOC {
+clear: both;
+margin: 0 0 10px 10px;
+padding: 4px;
+width: 400px;
+border: 1px solid #CCCCCC;
+border-radius: 5px;
+background-color: #f6f6f6;
+font-size: 13px;
+line-height: 1.3;
+}
+#TOC .toctitle {
+font-weight: bold;
+font-size: 15px;
+margin-left: 5px;
+}
+#TOC ul {
+padding-left: 40px;
+margin-left: -1.5em;
+margin-top: 5px;
+margin-bottom: 5px;
+}
+#TOC ul ul {
+margin-left: -2em;
+}
+#TOC li {
+line-height: 16px;
+}
+table {
+margin: 1em auto;
+border-width: 1px;
+border-color: #DDDDDD;
+border-style: outset;
+border-collapse: collapse;
+}
+table th {
+border-width: 2px;
+padding: 5px;
+border-style: inset;
+}
+table td {
+border-width: 1px;
+border-style: inset;
+line-height: 18px;
+padding: 5px 5px;
+}
+table, table th, table td {
+border-left-style: none;
+border-right-style: none;
+}
+table thead, table tr.even {
+background-color: #f7f7f7;
+}
+p {
+margin: 0.5em 0;
+}
+blockquote {
+background-color: #f6f6f6;
+padding: 0.25em 0.75em;
+}
+hr {
+border-style: solid;
+border: none;
+border-top: 1px solid #777;
+margin: 28px 0;
+}
+dl {
+margin-left: 0;
+}
+dl dd {
+margin-bottom: 13px;
+margin-left: 13px;
+}
+dl dt {
+font-weight: bold;
+}
+ul {
+margin-top: 0;
+}
+ul li {
+list-style: circle outside;
+}
+ul ul {
+margin-bottom: 0;
+}
+pre, code {
+background-color: #f7f7f7;
+border-radius: 3px;
+color: #333;
+white-space: pre-wrap; 
+}
+pre {
+border-radius: 3px;
+margin: 5px 0px 10px 0px;
+padding: 10px;
+}
+pre:not([class]) {
+background-color: #f7f7f7;
+}
+code {
+font-family: Consolas, Monaco, 'Courier New', monospace;
+font-size: 85%;
+}
+p > code, li > code {
+padding: 2px 0px;
+}
+div.figure {
+text-align: center;
+}
+img {
+background-color: #FFFFFF;
+padding: 2px;
+border: 1px solid #DDDDDD;
+border-radius: 3px;
+border: 1px solid #CCCCCC;
+margin: 0 5px;
+}
+h1 {
+margin-top: 0;
+font-size: 35px;
+line-height: 40px;
+}
+h2 {
+border-bottom: 4px solid #f7f7f7;
+padding-top: 10px;
+padding-bottom: 2px;
+font-size: 145%;
+}
+h3 {
+border-bottom: 2px solid #f7f7f7;
+padding-top: 10px;
+font-size: 120%;
+}
+h4 {
+border-bottom: 1px solid #f7f7f7;
+margin-left: 8px;
+font-size: 105%;
+}
+h5, h6 {
+border-bottom: 1px solid #ccc;
+font-size: 105%;
+}
+a {
+color: #0033dd;
+text-decoration: none;
+}
+a:hover {
+color: #6666ff; }
+a:visited {
+color: #800080; }
+a:visited:hover {
+color: #BB00BB; }
+a[href^="http:"] {
+text-decoration: underline; }
+a[href^="https:"] {
+text-decoration: underline; }
+
+code > span.kw { color: #555; font-weight: bold; } 
+code > span.dt { color: #902000; } 
+code > span.dv { color: #40a070; } 
+code > span.bn { color: #d14; } 
+code > span.fl { color: #d14; } 
+code > span.ch { color: #d14; } 
+code > span.st { color: #d14; } 
+code > span.co { color: #888888; font-style: italic; } 
+code > span.ot { color: #007020; } 
+code > span.al { color: #ff0000; font-weight: bold; } 
+code > span.fu { color: #900; font-weight: bold; } 
+code > span.er { color: #a61717; background-color: #e3d2d2; } 
+</style>
+
+
+
+
+</head>
+
+<body>
+
+
+
+
+<h1 class="title toc-ignore">Using Tidyverse readr</h1>
+<h4 class="author">George Cruz</h4>
+<h4 class="date">2020-10-25</h4>
+
+
+
+<p><strong>readr</strong> is a package of tidyverse that provides the ability to import data from common data files like: csv, tsv and fixed-wide-format. It is flexible enough to handle most of these files but it will also elegantly fail if something is not right.</p>
+<div id="using-readr" class="section level2">
+<h2>Using <strong>readr</strong></h2>
+<div id="installation" class="section level3">
+<h3>Installation</h3>
+<p>The <a href="https://readr.tidyverse.org/">official web site</a> tells us:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a><span class="co"># The easiest way to get readr is to install the whole tidyverse:</span></span>
+<span id="cb1-2"><a href="#cb1-2"></a><span class="kw">install.packages</span>(<span class="st">&quot;tidyverse&quot;</span>)</span>
+<span id="cb1-3"><a href="#cb1-3"></a></span>
+<span id="cb1-4"><a href="#cb1-4"></a><span class="co"># Alternatively, install just readr:</span></span>
+<span id="cb1-5"><a href="#cb1-5"></a><span class="kw">install.packages</span>(<span class="st">&quot;readr&quot;</span>)</span></code></pre></div>
+</div>
+<div id="using-the-library" class="section level3">
+<h3>Using the library</h3>
+<p>Since <strong>readr</strong> is part of tidyverse, loading it is as simple as loading the tidyverse:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1"></a><span class="kw">library</span>(tidyverse)</span>
+<span id="cb2-2"><a href="#cb2-2"></a><span class="co">#&gt; -- Attaching packages ---------------------------------------------- tidyverse 1.3.0 --</span></span>
+<span id="cb2-3"><a href="#cb2-3"></a><span class="co">#&gt; v ggplot2 3.3.2     v purrr   0.3.4</span></span>
+<span id="cb2-4"><a href="#cb2-4"></a><span class="co">#&gt; v tibble  3.0.3     v dplyr   1.0.0</span></span>
+<span id="cb2-5"><a href="#cb2-5"></a><span class="co">#&gt; v tidyr   1.1.2     v stringr 1.4.0</span></span>
+<span id="cb2-6"><a href="#cb2-6"></a><span class="co">#&gt; v readr   1.3.1     v forcats 0.5.0</span></span>
+<span id="cb2-7"><a href="#cb2-7"></a><span class="co">#&gt; -- Conflicts ------------------------------------------------- tidyverse_conflicts() --</span></span>
+<span id="cb2-8"><a href="#cb2-8"></a><span class="co">#&gt; x dplyr::filter() masks stats::filter()</span></span>
+<span id="cb2-9"><a href="#cb2-9"></a><span class="co">#&gt; x dplyr::lag()    masks stats::lag()</span></span></code></pre></div>
+</div>
+<div id="reading-data" class="section level3">
+<h3>Reading Data</h3>
+<p>The functions to read files share the same arguments and follow the same structure:</p>
+<p><code>read_*(file, col_names=TRUE, col_types=NULL, locale=default_locale(), na=c(&quot;&quot;,&quot;NA&quot;),quoted_na=TRUE,comment=&quot;&quot;,trim_ws=TRUE,skip=0,n_max=lnf,guess_max=min(1000,n_max),progress=interactive() )</code></p>
+<p>The only required argument for the function is the filename. Let’s read the argument description from an actual csv.</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a>arguments_list &lt;-<span class="st"> </span><span class="kw">read_csv</span>(<span class="st">&quot;../data/arguments_for_read_csv.csv&quot;</span>)</span>
+<span id="cb3-2"><a href="#cb3-2"></a><span class="co">#&gt; Parsed with column specification:</span></span>
+<span id="cb3-3"><a href="#cb3-3"></a><span class="co">#&gt; cols(</span></span>
+<span id="cb3-4"><a href="#cb3-4"></a><span class="co">#&gt;   argument = col_character(),</span></span>
+<span id="cb3-5"><a href="#cb3-5"></a><span class="co">#&gt;   required = col_character(),</span></span>
+<span id="cb3-6"><a href="#cb3-6"></a><span class="co">#&gt;   description = col_character()</span></span>
+<span id="cb3-7"><a href="#cb3-7"></a><span class="co">#&gt; )</span></span>
+<span id="cb3-8"><a href="#cb3-8"></a>knitr<span class="op">::</span><span class="kw">kable</span>(arguments_list)</span></code></pre></div>
+<table>
+<colgroup>
+<col width="14%"></col>
+<col width="7%"></col>
+<col width="77%"></col>
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left">argument</th>
+<th align="left">required</th>
+<th align="left">description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">file</td>
+<td align="left">required</td>
+<td align="left">Either a path to a file, a connection or literal data</td>
+</tr>
+<tr class="even">
+<td align="left">col_names</td>
+<td align="left">optional</td>
+<td align="left">Either TRUE/FALSE or a character vector of column names.</td>
+</tr>
+<tr class="odd">
+<td align="left">col_types</td>
+<td align="left">optional</td>
+<td align="left">if NULL tries to guess the col_type, otherwise need to be specified.</td>
+</tr>
+<tr class="even">
+<td align="left">na</td>
+<td align="left">optional</td>
+<td align="left">Character vector of strings to interpret as missing values.</td>
+</tr>
+<tr class="odd">
+<td align="left">quoted_na</td>
+<td align="left">optional</td>
+<td align="left">Determine if missing values inside quotes will be treated as missing values or strings.</td>
+</tr>
+<tr class="even">
+<td align="left">comment</td>
+<td align="left">optional</td>
+<td align="left">A string used to identify comments.</td>
+</tr>
+<tr class="odd">
+<td align="left">trim_ws</td>
+<td align="left">optional</td>
+<td align="left">Should whitespace be trimmed from start and end of string?</td>
+</tr>
+<tr class="even">
+<td align="left">skip</td>
+<td align="left">optional</td>
+<td align="left">Number of lines to skip before reading data.</td>
+</tr>
+<tr class="odd">
+<td align="left">n_max</td>
+<td align="left">optional</td>
+<td align="left">Maximum number of records to read.</td>
+</tr>
+<tr class="even">
+<td align="left">guess_max</td>
+<td align="left">optional</td>
+<td align="left">Maximum number of records to use for guessing column types.</td>
+</tr>
+<tr class="odd">
+<td align="left">progress</td>
+<td align="left">optional</td>
+<td align="left">Display a progress bar?</td>
+</tr>
+<tr class="even">
+<td align="left">skip_empty_rows</td>
+<td align="left">optional</td>
+<td align="left">Should blank rows be ignored altogether?</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="an-example" class="section level3">
+<h3>An Example</h3>
+<p>To show another example, let’s read data from the Election Forecasts csv files listed at <a href="https://data.fivethirtyeight.com/">FiveThirtyEight</a>. More specifically, we will read the file: <code>electoral_college_vs_popvote.csv</code></p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1"></a>electoral_data &lt;-<span class="st"> </span><span class="kw">read_csv</span>(<span class="st">&quot;../data/electoral_college_vs_popvote.csv&quot;</span>, </span>
+<span id="cb4-2"><a href="#cb4-2"></a>                           <span class="dt">col_types =</span> <span class="kw">cols</span>(</span>
+<span id="cb4-3"><a href="#cb4-3"></a>                             <span class="dt">cycle =</span> <span class="kw">col_integer</span>(),</span>
+<span id="cb4-4"><a href="#cb4-4"></a>                             <span class="dt">branch =</span> <span class="kw">col_character</span>(),</span>
+<span id="cb4-5"><a href="#cb4-5"></a>                             <span class="dt">model =</span> <span class="kw">col_character</span>(),</span>
+<span id="cb4-6"><a href="#cb4-6"></a>                             <span class="dt">modeldate =</span> <span class="kw">col_character</span>(),</span>
+<span id="cb4-7"><a href="#cb4-7"></a>                             <span class="dt">candidate_inc =</span> <span class="kw">col_character</span>(),</span>
+<span id="cb4-8"><a href="#cb4-8"></a>                             <span class="dt">candidate_chal =</span> <span class="kw">col_character</span>(),</span>
+<span id="cb4-9"><a href="#cb4-9"></a>                             <span class="dt">candidate_3rd =</span> <span class="kw">col_character</span>(),</span>
+<span id="cb4-10"><a href="#cb4-10"></a>                             <span class="dt">lower_bin_text =</span> <span class="kw">col_character</span>(),</span>
+<span id="cb4-11"><a href="#cb4-11"></a>                             <span class="dt">upper_bin_text =</span> <span class="kw">col_character</span>(),</span>
+<span id="cb4-12"><a href="#cb4-12"></a>                             <span class="dt">ecwin_inc =</span> <span class="kw">col_double</span>(),</span>
+<span id="cb4-13"><a href="#cb4-13"></a>                             <span class="dt">ecwin_chal =</span> <span class="kw">col_double</span>(),</span>
+<span id="cb4-14"><a href="#cb4-14"></a>                             <span class="dt">ecwin_3rd =</span> <span class="kw">col_double</span>(),</span>
+<span id="cb4-15"><a href="#cb4-15"></a>                             <span class="dt">ecwin_nomajority =</span> <span class="kw">col_double</span>(),</span>
+<span id="cb4-16"><a href="#cb4-16"></a>                             <span class="dt">total_ev_inc =</span> <span class="kw">col_double</span>(),</span>
+<span id="cb4-17"><a href="#cb4-17"></a>                             <span class="dt">ev_inc_hi =</span> <span class="kw">col_double</span>(),</span>
+<span id="cb4-18"><a href="#cb4-18"></a>                             <span class="dt">ev_inc_lo =</span> <span class="kw">col_double</span>(),</span>
+<span id="cb4-19"><a href="#cb4-19"></a>                             <span class="dt">total_ev_chal =</span> <span class="kw">col_double</span>(),</span>
+<span id="cb4-20"><a href="#cb4-20"></a>                             <span class="dt">ev_chal_hi =</span> <span class="kw">col_double</span>(),</span>
+<span id="cb4-21"><a href="#cb4-21"></a>                             <span class="dt">ev_chal_lo =</span> <span class="kw">col_double</span>(),</span>
+<span id="cb4-22"><a href="#cb4-22"></a>                             <span class="dt">count =</span> <span class="kw">col_double</span>(),</span>
+<span id="cb4-23"><a href="#cb4-23"></a>                             <span class="dt">timestamp =</span> <span class="kw">col_character</span>(),</span>
+<span id="cb4-24"><a href="#cb4-24"></a>                             <span class="dt">simulations =</span> <span class="kw">col_integer</span>()</span>
+<span id="cb4-25"><a href="#cb4-25"></a>                           ))</span></code></pre></div>
+<p>Specifying the column types reduces the warnings that could have been caused by missed conversions.</p>
+</div>
+</div>
+
+
+
+<!-- code folding -->
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

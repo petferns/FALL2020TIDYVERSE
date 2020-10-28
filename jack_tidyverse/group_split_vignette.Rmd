@@ -1,0 +1,88 @@
+---
+title: "group_split and map vignette"
+author: "Jack Wright"
+date: "10/24/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## dplyr function "group_split()"
+
+group_split() helps elucidate the nature of the data frame object in r. A data frame is just a list of equal length vectors. The consequence of this is you can reframe your thinking around accessing and editing data frames. 
+
+## personal note
+
+I was working on a vignette for the map() function, and in my research found these data frames nested inside of lists which I had not encountered before. 
+
+
+## what is group_split()
+
+group_split() is like group_by() , but instead of the groups being inside a data frame, it splits the groups into separate data frames. which can be stored inside of a list object. leaving you with a list of data frames. 
+
+## libraries
+```{r message=FALSE}
+library(tidyverse)
+```
+
+
+## example
+
+
+```{r}
+#trimmed the file from 400k observations to make loading quicker
+dat<-read.csv("https://raw.githubusercontent.com/JackJosephWright/data/master/Library_Usage.csv")
+
+#check if 
+is.factor(dat$Patron.Type.Definition)
+
+#set Patron.Type.Code as factor
+dat$Patron.Type.Definition<-as.factor(dat$Patron.Type.Definition)
+
+
+#split into tables by factor
+
+df_list<-dat%>%
+  group_split(Patron.Type.Definition)
+
+```
+
+
+## use case
+
+This would be useful if you wanted to save the data in separate data frames. A much more likely scenario is that you might download a zipped file from a source like kaggle with multiple data frames in it. Instead of performing an operation on each data frame individually, we can use list manipulation techniques to address them all at once. 
+
+
+## what is the function map()
+
+the map() function in the purr package in tidyverse is a more concise version of the apply() functions in base r. It performs a function on elements of lists. 
+
+### personal note
+
+I always took columns out of data frames to use lapply on them because I wasn't aware that data frames ARE lists!
+
+
+## example
+
+since all of our data frames are in a list, we can apply a single map() function to each and get a vector output
+
+The arguments in map() are 
+
+map(x,f)
+-x: the target list we want to manipulate
+
+-f: the function, just like in the apply() family
+  (note instead of function(x){}) we simply use a    tilde. 
+  
+  In the argument of the function, we reference the
+  target as a period (.) in
+```{r}
+
+map(df_list, ~mean(.$Total.Checkouts))
+
+
+```
+
+
