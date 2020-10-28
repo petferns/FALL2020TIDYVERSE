@@ -72,10 +72,12 @@ The dataset was imported and cleaned using packages in TidyVerse
 # FALL2020TIDYVERSE
 CUNY DATA 607 TIDYVERSE Collaborative project
 
+John Mazon TidyVerse Create Assignment - 
+Analysis of Diamond clarity and depth correlation/frequency as well as ratio [pertaining to price to depth] using multiple TidyVerse functionalities 
+=======
 
 * Data Analysis of Grocery items sold using Groceries_dataset.csv
 =======
 Change Log:
 26 October: Added vignette w/ examples for purrr and forcats, Cameron Smith
-
 
