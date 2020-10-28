@@ -83,6 +83,10 @@ I decided to pick a data set regarding the senate race fundamentals. Using dplyr
 =======
 CUNY DATA 607 TIDYVERSE Collaborative project
 
+
+CREATE Vignette Tidyverse Project describes how to use tidyverse functions
+see palmorezm_tidyverse_vignette for importing data from comma separated values
+=======
 Orli Khaimova
 
 `fct_rev` relevels the levels of a factor in reverse order. In this case, I factored the regions and then used the function in order to put them in reverse alphabetical order. By doing so, I was able to print the regions alphabetically in the graph.
@@ -509,5 +513,4 @@ Analysis of Diamond clarity and depth correlation/frequency as well as ratio [pe
 =======
 Change Log:
 26 October: Added vignette w/ examples for purrr and forcats, Cameron Smith
-
 
