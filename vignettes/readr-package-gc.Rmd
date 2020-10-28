@@ -1,0 +1,108 @@
+---
+title: "Using Tidyverse readr"
+author: "George Cruz"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Vignette Title}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+**readr** is a package of tidyverse that provides the ability to import data from common data files like: csv, tsv and fixed-wide-format.  It is flexible enough to handle most of these files but it will also elegantly fail if something is not right. 
+
+
+## Using **readr**
+
+### Installation
+
+The [official web site](https://readr.tidyverse.org/) tells us: 
+```{r eval=FALSE}
+# The easiest way to get readr is to install the whole tidyverse:
+install.packages("tidyverse")
+
+# Alternatively, install just readr:
+install.packages("readr")
+
+```
+
+### Using the library
+
+Since **readr** is part of tidyverse, loading it is as simple as loading the tidyverse:
+
+```{r}
+library(tidyverse)
+```
+
+### Reading Data
+
+The functions to read files share the same arguments and follow the same structure: 
+
+`read_*(file, col_names=TRUE, col_types=NULL, locale=default_locale(), na=c("","NA"),quoted_na=TRUE,comment="",trim_ws=TRUE,skip=0,n_max=lnf,guess_max=min(1000,n_max),progress=interactive() )`
+
+The only required argument for the function is the filename. Let's read the argument description from an actual csv.
+
+```{r warning=FALSE}
+arguments_list <- read_csv("../data/arguments_for_read_csv.csv")
+knitr::kable(arguments_list)
+```
+
+
+### An Example
+
+To show another example, let's read data from the Election Forecasts csv files listed at [FiveThirtyEight](https://data.fivethirtyeight.com/).  More specifically, we will read the file: `electoral_college_vs_popvote.csv`
+
+```{r}
+electoral_data <- read_csv("../data/electoral_college_vs_popvote.csv", 
+                           col_types = cols(
+                             cycle = col_integer(),
+                             branch = col_character(),
+                             model = col_character(),
+                             modeldate = col_character(),
+                             candidate_inc = col_character(),
+                             candidate_chal = col_character(),
+                             candidate_3rd = col_character(),
+                             lower_bin_text = col_character(),
+                             upper_bin_text = col_character(),
+                             ecwin_inc = col_double(),
+                             ecwin_chal = col_double(),
+                             ecwin_3rd = col_double(),
+                             ecwin_nomajority = col_double(),
+                             total_ev_inc = col_double(),
+                             ev_inc_hi = col_double(),
+                             ev_inc_lo = col_double(),
+                             total_ev_chal = col_double(),
+                             ev_chal_hi = col_double(),
+                             ev_chal_lo = col_double(),
+                             count = col_double(),
+                             timestamp = col_character(),
+                             simulations = col_integer()
+                           ))
+```
+
+Specifying the column types reduces the warnings that could have been caused by missed conversions. 
+
+```{r}
+knitr::kable(head(electoral_data))
+```
+
+This table lists the probable outcomes of the presidential election based on 4000 simulations. 
+
+
+### Let's see the top 10 probable results by using arrange
+
+```{r}
+sorted_by_probabilities <- electoral_data %>%
+  arrange(desc(count))
+
+knitr::kable(head(sorted_by_probabilities,10))
+```
+
+
