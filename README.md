@@ -73,6 +73,8 @@ The dataset was imported and cleaned using packages in TidyVerse
 CUNY DATA 607 TIDYVERSE Collaborative project
 
 
+Josef Waples - power plant data added as 19th pull request but am I first change to readme.md file? 
+=======
 
 # Description
 arrange() sorts the rows according to the values of the specified column, with the lowest values appearing near the top of the data frame.Place desc() around a column name to cause arrange() to sort by descending values of that column.
@@ -146,6 +148,5 @@ Analysis of Diamond clarity and depth correlation/frequency as well as ratio [pe
 =======
 Change Log:
 26 October: Added vignette w/ examples for purrr and forcats, Cameron Smith
-
 
 
