@@ -84,6 +84,9 @@ I decided to pick a data set regarding the senate race fundamentals. Using dplyr
 CUNY DATA 607 TIDYVERSE Collaborative project
 
 
+M_Skonberg Tidyverse CREATE - function(ggplot2), data(Happiness & Alcohol)
+=======
+
 Stefano Biguzzi - vignette on the dplyr library group_by(), tally(), and summarise() functions.
 =======
 BDavidoff Tidyverse CREATE - packages: [ggplot2, dpylr] data source: [COVID and presidental approval ratings (https://raw.githubusercontent.com/fivethirtyeight/covid-19-polls/master/covid_approval_polls.csv)]
@@ -522,3 +525,4 @@ Analysis of Diamond clarity and depth correlation/frequency as well as ratio [pe
 =======
 Change Log:
 26 October: Added vignette w/ examples for purrr and forcats, Cameron Smith
+
