@@ -1,6 +1,6 @@
 ---
-title: "TidyVerse CREATE"
-author: "Arushi Arora"
+title: "TidyVerse EXTEND"
+author: "Stefano Biguzzi"
 date: "10/23/2020"
 output: rmarkdown::html_vignette
 vignette: >
@@ -13,6 +13,10 @@ vignette: >
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
+
+# Part I: Arushi Arora - CREATE
+
+The following code was written by Arushi Arora on 10/23 for her TidyVerse CREATE assignment.
 
 ## Introdction
 The following example from Five Thirty Eight https://fivethirtyeight.com/features/how-americans-like-their-steak/
@@ -88,8 +92,8 @@ steakdata4 <- steakdata3 %>%
   head(steakdata4)
 ```
 
+# Part II: Stefano Biguzzi - EXTEND
 
-## Part II: Stefano Biguzzi - EXTEND
 ### Introduction
 Your task here is to **Extend an Existing Example**.  Using one of your classmate’s examples (as created above), extend his or her example with additional annotated code.
 
