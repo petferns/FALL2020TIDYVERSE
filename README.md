@@ -1,3 +1,6 @@
+# Karim Hommod
+My analysis includs analysing the sales of video games all around the world, I used more than one Tidyverse packges, and collected the data from Kaggle. 
+=======
 ======================================================================================================================================================================
 Vignette on Tidyverse packages by Alexis Mekueko
 ```{r load-packages, message=FALSE}
@@ -51,7 +54,11 @@ Top_500Songs %>%
 
 my analysis includs analysing the sales of video games all around the world, I used more than one Tidyverse packges, and collected the data from Kaggle. 
 
+
 Any additional analysis is welcome.
+
+## Rachel Greenlee extended Karim's work by displaying only PC games since 2010 by genre in an animated bar chart by year. This is an exaple of how to extend ggplot's functionality using the gganimate package, which can be used for animated bar charts or bubble charts.
+
 =======
 
 # TidyVerse Recipe CREATE
