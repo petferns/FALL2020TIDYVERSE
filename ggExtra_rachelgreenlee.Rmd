@@ -118,3 +118,69 @@ plotCount(table(ufo$country)) +
   coord_flip()
 ```
 
+
+### Tidyverse extend
+
+Rachel's choice in UFO data and the ggExtra package caught my eye. Interesting data and further visualization skills - yes please :) Let's explore!
+
+Based on Rachel's final plot we observe that the clear majority of activity was focused in the US. Where exactly was it concentrated though?
+
+We explore this question via the plotCount() function for frequency plot and the removeGrid() function to see the plot without grid lines:
+
+```{r}
+
+#subset our data to focus only on US data
+ufo_us <- ufo[ which(ufo$country=='us'), ]
+
+#plot the count per state
+p <- plotCount(table(ufo_us$state)) +
+  coord_flip()
+
+#remove grid lines
+p + removeGrid()
+
+```
+From the above plot, we see that the most active states are California, Washington, Florida, Texas, and Nevada.
+
+We can thus subset our data once again to focus exclusively on these states when we revisit the marginal plot (50 colors / variables would have been a bit much):
+
+```{r}
+#subset our data to focus on the most active states
+ufo_us2 <- ufo[ which(ufo$state=='ca' | ufo$state=='wa' | ufo$state=='fl' | ufo$state=='tx' | ufo$state=='nv'), ]
+
+```
+
+At this point, we're ready to re-plot ...
+
+We plot the duration of a sighting vs. the year of the sighting, this time with the state the activity was reported under as the color-coding. We then revisit the ggMarginal() function by plotting a histogram without fill on the axes:
+
+```{r, warning = FALSE}
+g2 <- ggplot(ufo_us2, aes(x = year, y = duration_mins, color = state)) +
+  geom_count() +
+  ylim(0, 60)
+
+ggMarginal(g2, type = "histogram", fill = "transparent")
+```
+
+It's interesting to note that the first recorded report (in our dataset) is from 1925 in Texas and that the count increased dramatically as we neared and then passed the year 2000.
+
+> Are people more seeking of attention or has UFO activity really spiked?
+
+...
+
+In addition to the ggMarginal plot from above, I thought it might be interesting to explore different variables and a different style of plot with the US data.
+
+We plot the datetime of a sighting vs. the shape of the reported UFO. We then revisit the ggMarginal() function (again), this time as a densigram:
+
+```{r, warning = FALSE}
+g2 <- ggplot(ufo_us2, aes(x = shape, y = datetime, color = state)) +
+  geom_count()
+
+ggMarginal(g2 + rotateTextX(), type = "densigram", fill = "transparent")
+```
+
+With regard to datetime, it tells us the same thing that we observed before, that the duration of reports increased near and after the year 2000. It is interesting to observe the difference in densities based on shapes in this era though.
+
+It's also interesting to note the variance of reported shapes of these UFOs as time progressed. It seems the most common reports are "light", "formation", "fireball", and "circle".
+
+All-in-all this was a very interesting dataset and library to explore and I'm thankful that Rachel elected it in the first place and provided me the opportunity to extend the vignette. Hope this was as interesting for you to peruse as it was for me!
