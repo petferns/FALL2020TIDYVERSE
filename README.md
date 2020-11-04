@@ -1,5 +1,59 @@
 # Karim Hommod
 My analysis includs analysing the sales of video games all around the world, I used more than one Tidyverse packges, and collected the data from Kaggle. 
+=======
+======================================================================================================================================================================
+Vignette on Tidyverse packages by Alexis Mekueko
+```{r load-packages, message=FALSE}
+
+library(tidyverse) 
+library(knitr)
+library(readr)
+library(dplyr)
+library(stringr)
+```
+Github Link: https://github.com/asmozo24/DATA607_Tidyverse-CREATE-Assignmen
+Web link: https://rpubs.com/amekueko/682620
+data source: https://www.kaggle.com/omarhanyy/500-greatest-songs-of-all-time
+
+# Description
+This assignment is about getting familiar with two or more Tidyverse packages. So, I am going to write a vignette using readr, dplyr , and stringr which are part of the core tidyverse packages used for data analysis.
+
+# Data
+For this assignment, I found a dataset from kaggle.com about the 500 greatest songs of all time. I am going to use it to practice tidyverse packages as states in the description part. The data is large for display and might cause some issue in attemptin to display all output. 
+
+Below is sample of code...for full view, please use web link or Github link.
+
+```{r }
+# load the csv file which has all the variable.
+
+Top_500Songs <- read.csv("https://raw.githubusercontent.com/asmozo24/DATA607_Tidyverse-CREATE-Assignmen/main/Top%20500%20Songs.csv", stringsAsFactors=FALSE)
+
+# file to big, cleaning/removing the column I don't need
+Top_500Songs <- Top_500Songs [, -2]
+# saving the new csv file 
+write.csv(Top_500Songs,'Top_500Songs.csv')
+
+#view the details of top_500songs
+glimpse(Top_500Songs)
+
+# let's check if there is a missing value in a specific column
+# return 06 rows with empty values...tempted to delete data but will not do it now....no need
+Top_500Songs %>% 
+  filter( is.na(streak) | streak == "") 
+# another way
+filter(Top_500Songs, is.na(streak) | streak == "")
+filter(Top_500Songs, !grepl("weeks", streak))
+ 
+# Being in the top 500 greatest songs of all time, I will assum the song hits the hit parade of billboard for few months...lets check that
+Top_500Songs %>% 
+  select(streak)%>% 
+  filter(grepl("weeks", streak))
+
+```
+======================================================================================================================================================================
+
+my analysis includs analysing the sales of video games all around the world, I used more than one Tidyverse packges, and collected the data from Kaggle. 
+
 
 Any additional analysis is welcome.
 
@@ -87,6 +141,25 @@ I decided to pick a data set regarding the senate race fundamentals. Using dplyr
 =======
 CUNY DATA 607 TIDYVERSE Collaborative project
 
+The accompanying vignette is a breif introduct to the GGplot2 package.  
+
+GGplot2 is a grammatically layered approch towards visualizations.  The combinations of the layers, features, and options are nearly endless, providing a fully customizable visual to cater any data set.  For this example, we will be using categorical information based on a Holloween Candy survey.
+
+Below is a very basic snapshot of the GGplot2 package and its potential.  Lets tackle the below concepts.
+-Set-up
+-Objects
+-Aesthetics
+-Facets
+-Coordinates
+=======
+
+M_Skonberg Tidyverse CREATE - function(ggplot2), data(Happiness & Alcohol)
+=======
+
+Stefano Biguzzi - vignette on the dplyr library group_by(), tally(), and summarise() functions.
+=======
+BDavidoff Tidyverse CREATE - packages: [ggplot2, dpylr] data source: [COVID and presidental approval ratings (https://raw.githubusercontent.com/fivethirtyeight/covid-19-polls/master/covid_approval_polls.csv)]
+=======
 Using ggExtra for Exploratory Plotting by Rachel Greenlee
 -adding boxplots and histograms to axis of a standard scatterplot
 -super quick frequency histograms
@@ -521,5 +594,4 @@ Analysis of Diamond clarity and depth correlation/frequency as well as ratio [pe
 =======
 Change Log:
 26 October: Added vignette w/ examples for purrr and forcats, Cameron Smith
-
 
