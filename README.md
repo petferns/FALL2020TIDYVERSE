@@ -163,6 +163,8 @@ BDavidoff Tidyverse CREATE - packages: [ggplot2, dpylr] data source: [COVID and 
 Using ggExtra for Exploratory Plotting by Rachel Greenlee
 -adding boxplots and histograms to axis of a standard scatterplot
 -super quick frequency histograms
+
+## Magnus Skonberg extended Rachel's work by exploring the frequency UFO sightings within the US and applying plotCount(), removeGrid(), ggMarginal(), and rotateTextX() functions.
 =======
 
 CREATE Vignette Tidyverse Project describes how to use tidyverse functions
